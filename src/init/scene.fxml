@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <bottom>
+        <HBox fx:id="hboxBottom" prefHeight="45.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" prefHeight="45.0" prefWidth="1278.0" text="Placeholder - Colors, shape operations" />
+            </children>
+        </HBox>
+    </bottom>
+    <left>
+        <VBox fx:id="vboxLeft" prefHeight="725.0" prefWidth="45.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" prefHeight="712.0" prefWidth="45.0" text="Shapes" />
+            </children>
+        </VBox>
+    </left>
+    <right>
+        <AnchorPane fx:id="paneRight" prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" layoutX="14.0" layoutY="6.0" prefHeight="693.0" prefWidth="226.0" styleClass="big-text" text="Placeholder - Shape info" />
+            </children>
+        </AnchorPane>
+    </right>
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="vector-scene" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" layoutX="343.0" layoutY="205.0" prefHeight="300.0" prefWidth="300.0" styleClass="big-text" text="Placeholder - Vector canvas" />
+            </children>
+        </AnchorPane>
+    </center>
+    <top>
+        <MenuBar prefHeight="45.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+</BorderPane>
