@@ -13,6 +13,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
         root.getStylesheets().add("styles/styles.css");
         primaryStage.setTitle("jVGE");
+        primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 1280, 800));
         primaryStage.show();
     }
