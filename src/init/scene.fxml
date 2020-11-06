@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -9,33 +10,57 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <?import custom_components.VectorScene?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" fx:controller="init.Controller" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="b" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="init.Controller">
     <bottom>
         <HBox fx:id="hboxBottom" prefHeight="45.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
             <children>
             <Button fx:id="buttonShowContent" mnemonicParsing="false" onAction="#showContent" prefHeight="45.0" prefWidth="184.0" text="SHOW CONTENT" />
-                <Label alignment="CENTER" prefHeight="45.0" prefWidth="916.0" text="Placeholder - Colors, shape operations" />
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="100.0" styleClass="big-text" text="Fill" textAlignment="CENTER" />
+            <ColorPicker fx:id="colorPickerFill" prefHeight="63.0" prefWidth="50.0" />
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="100.0" styleClass="big-text" text="Stroke" />
+            <ColorPicker fx:id="colorPickerStroke" prefHeight="68.0" prefWidth="50.0" />
             </children>
         </HBox>
     </bottom>
     <left>
-        <VBox fx:id="vboxLeft" prefHeight="725.0" prefWidth="45.0" BorderPane.alignment="CENTER">
-            <children>
-                <Label alignment="CENTER" prefHeight="712.0" prefWidth="45.0" text="Shapes" />
-            </children>
+        <VBox fx:id="vboxLeft" maxWidth="45.0" prefHeight="725.0" prefWidth="45.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="buttonActionInteract" mnemonicParsing="false" onAction="#switchActionInteract" prefHeight="25.0" prefWidth="51.0" text="NIL">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
+            <Button fx:id="buttonActionMove" mnemonicParsing="false" onAction="#switchActionMove" prefHeight="23.0" prefWidth="54.0" text="MOVE">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
+            <Button fx:id="buttonActionLine" mnemonicParsing="false" onAction="#switchActionLine" prefHeight="25.0" prefWidth="56.0" text="LINE">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
+            <Button fx:id="buttonActionCircle" mnemonicParsing="false" onAction="#switchActionCircle" prefHeight="25.0" prefWidth="53.0" text="RING">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
+            <Button fx:id="buttonActionRectangle" mnemonicParsing="false" onAction="#switchActionRectangle" prefHeight="23.0" prefWidth="55.0" text="RECT">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+         </children>
         </VBox>
     </left>
     <right>
         <AnchorPane fx:id="paneRight" prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER">
             <children>
-                <Label alignment="CENTER" layoutX="14.0" layoutY="6.0" prefHeight="693.0" prefWidth="226.0" styleClass="big-text" text="Placeholder - Shape info" />
+                <Label alignment="CENTER" layoutX="14.0" layoutY="6.0" maxWidth="225.0" prefHeight="693.0" prefWidth="323.0" styleClass="big-text" text="Placeholder - Shape info" />
             </children>
         </AnchorPane>
     </right>
     <center>
-        <VectorScene fx:id="scene" prefHeight="200.0" prefWidth="200.0" styleClass="vector-scene" BorderPane.alignment="CENTER" />
+        <VectorScene fx:id="scene" maxHeight="710.0" maxWidth="1010.0" prefHeight="710.0" prefWidth="1010.0" styleClass="vector-scene" BorderPane.alignment="CENTER" />
     </center>
     <top>
         <MenuBar prefHeight="45.0" prefWidth="1280.0" BorderPane.alignment="CENTER">

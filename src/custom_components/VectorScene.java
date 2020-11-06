@@ -18,7 +18,7 @@ public class VectorScene extends Pane {
     // Holds information about action that happens after left clicking the vector scene
     private ClickMode action;
     // Holds all shapes that are currently present in vector scene
-    public ArrayList<IShape> content = new ArrayList<>();
+    private ArrayList<IShape> content = new ArrayList<>();
     // Colors of object fill and object stroke
     private Color fillColor;
     private Color strokeColor;
@@ -26,33 +26,41 @@ public class VectorScene extends Pane {
     private boolean isDrawing = false;
     // Currently picked shape -> determines what shapes are meant to be edited
     private IShape currentShape;
+    //  Current layer where shapes will be placed
+    private int layer;
 
 
     /**
      *  <p>Initializes custom vector scene component. Adds click and drag listeners, these are used for drawing shapes.</p>
      */
     public VectorScene(){
-        action = ClickMode.LINE;
-        fillColor = Color.BLUE;
-        strokeColor = Color.GREEN;
+        action = ClickMode.CIRCLE;
+        fillColor = Color.WHITE;
+        strokeColor = Color.BLACK;
+        layer = 0;
 
         // When user clicks the scene with left button and user is not drawing, a shape is added to both scene and its content.
-        // When user clicks the scene with right button and user is drawing, the draw mode ends.
         setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent m) {
-                if(m.getButton() == MouseButton.PRIMARY && !isDrawing){
+                if(m.getButton() == MouseButton.PRIMARY && !isDrawing &&  action != ClickMode.INTERACT) {
                     isDrawing = true;
-                    switch(action){
-                        case INTERACT:
-                            break;
+                    switch (action) {
                         case LINE:
-                            newShape(new MyLine(m.getX(), m.getY(), strokeColor));
+                            newShape(new MyLine(VectorScene.this, layer, m.getX(), m.getY(), strokeColor));
+                            break;
+                        case CIRCLE:
+                            newShape(new MyCircle(VectorScene.this, layer, m.getX(), m.getY(), 0, strokeColor, fillColor));
+                            break;
+                        case RECTANGLE:
+                            newShape(new MyRectangle(VectorScene.this, layer, m.getX(), m.getY(), 0, 0, strokeColor, fillColor));
                             break;
                     }
+                } else if(m.getButton() == MouseButton.PRIMARY && isDrawing){
+                    isDrawing = false;
                 }
                 if(m.getButton() == MouseButton.SECONDARY && isDrawing){
-                    isDrawing = false;
+                    removeUnfinishedShape();
                 }
             }
         });
@@ -67,8 +75,9 @@ public class VectorScene extends Pane {
                         case INTERACT:
                             break;
                         case LINE:
-                            ((MyLine) currentShape).setEndX(m.getX());
-                            ((MyLine) currentShape).setEndY(m.getY());
+                        case CIRCLE:
+                        case RECTANGLE:
+                            currentShape.adjust(m.getX(), m.getY());
                             break;
                     }
                 }
@@ -77,21 +86,49 @@ public class VectorScene extends Pane {
     }
 
     /**
-     * <p>Changes action state</p>
-     * @param act Shape that will be drawn after user left clicks the scene
-     */
-    public void changeClickMode(ClickMode act){
-        action = act;
-    }
-
-    /**
      * <p>Adds shape to scene, content list and currentShape</p>
      * @see #VectorScene
      */
-    public void newShape(IShape shape){
+    private void newShape(IShape shape){
         content.add(shape);
         getChildren().add((Shape) shape);
         currentShape = shape;
+    }
+
+    /**
+     * <p>If shapes from content are not present on canvas, render them</p>
+     */
+    private void renderContent(){
+        for(IShape shape : content){
+            if(!getChildren().contains(shape)){
+                getChildren().add((Shape) shape);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     *     If user switches drawMode without finishing drawing the shape, type error is prevented by calling this function.
+     * </p>
+     * @see #removeUnfinishedShape()
+     */
+    public void switchMode(){
+        if(isDrawing) {
+            removeUnfinishedShape();
+        }
+    }
+
+    /**
+     * <p>
+     *      Remove shape user is currently drawing from both canvas and content.
+     *      Set control vars to init state.
+     * </p>
+     */
+    private void removeUnfinishedShape(){
+        isDrawing = false;
+        content.remove(currentShape);
+        getChildren().remove(currentShape);
+        currentShape = null;
     }
 
     /**
@@ -101,6 +138,27 @@ public class VectorScene extends Pane {
         for(int i = 0; i < content.size(); i++){
             System.out.println("[" + i + "]\t->\t" + content.get(i));
         }
+    }
+
+
+    /*
+    Getters and setters
+    Nothing interesting here
+     */
+    public void setClickMode(ClickMode act){
+        action = act;
+    }
+
+    public ClickMode getClickMode(){
+        return action;
+    }
+
+    public void setFillColor(Color c){
+        fillColor = c;
+    }
+
+    public void setStrokeColor(Color c){
+        strokeColor = c;
     }
 }
 

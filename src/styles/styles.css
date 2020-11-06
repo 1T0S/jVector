@@ -12,6 +12,17 @@
     -fx-text-alignment: center;
 }
 
+.color-picker {
+    -fx-background-color: #2d2d30;
+    -fx-background-radius: 2;
+    -fx-padding: 0;
+    -fx-background-insets: 0, 1;
+}
+
+.color-picker .color-picker-label .text {
+    visibility: false;
+}
+
 /* Styles by Mahdi Massahi -> https://github.com/Mahdi-Massahi/JavaFX-DarkTheme -> Cool dark theme. */
 
 /* Label */
