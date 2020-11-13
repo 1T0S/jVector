@@ -6,12 +6,15 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import misc.Others;
 
-public class MyCircle extends Circle implements IShape {
+import java.io.Serializable;
+
+public class MyCircle extends Circle implements IShape{
     private VectorScene scene;
     private int layer;
 
-    public MyCircle(VectorScene sc, int l, double ox, double oy, double r, Color stroke, Color fill){
+    public MyCircle(VectorScene sc, int l, double ox, double oy, double r, Color stroke, Color fill, int strokeWidth){
         scene = sc;
         layer = l;
         setCenterX(ox);
@@ -19,6 +22,7 @@ public class MyCircle extends Circle implements IShape {
         setRadius(r);
         setStroke(stroke);
         setFill(fill);
+        setStrokeWidth(strokeWidth);
 
         // Placeholder -> When user clicks, something happens
         setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -46,5 +50,14 @@ public class MyCircle extends Circle implements IShape {
     public void move(double ox, double oy){
         setCenterX(ox);
         setCenterY(oy);
+    }
+
+    @Override
+    public String toSvg(){
+        String stroke = Others.getHtmlColor((Color) getStroke());
+        String fill = Others.getHtmlColor((Color) getFill());
+        return "<circle cx=\"" + (int) getCenterX() +"\" cy=\"" + (int) getCenterY() + "\" r=\"" + (int) getRadius() +
+                "\" fill-opacity=\"" + (int) getOpacity() + "\" stroke-width=\"" +
+                (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
     }
 }

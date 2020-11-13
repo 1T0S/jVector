@@ -4,17 +4,18 @@ import custom_shapes.IShape;
 import custom_shapes.MyCircle;
 import custom_shapes.MyLine;
 import custom_shapes.MyRectangle;
+import init.Controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class VectorScene extends Pane {
+public class VectorScene extends Pane{
     // Holds information about action that happens after left clicking the vector scene
     private ClickMode action;
     // Holds all shapes that are currently present in vector scene
@@ -22,6 +23,7 @@ public class VectorScene extends Pane {
     // Colors of object fill and object stroke
     private Color fillColor;
     private Color strokeColor;
+    private int strokeWidth;
     // Checks whether user is drawing -> prevents duplicates
     private boolean isDrawing = false;
     // Currently picked shape -> determines what shapes are meant to be edited
@@ -34,32 +36,35 @@ public class VectorScene extends Pane {
      *  <p>Initializes custom vector scene component. Adds click and drag listeners, these are used for drawing shapes.</p>
      */
     public VectorScene(){
-        action = ClickMode.CIRCLE;
-        fillColor = Color.WHITE;
+        action = ClickMode.INTERACT;
+        fillColor = Color.color(0, 0, 0, 0);
         strokeColor = Color.BLACK;
-        layer = 0;
+        strokeWidth = 1;
 
         // When user clicks the scene with left button and user is not drawing, a shape is added to both scene and its content.
         setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent m) {
-                if(m.getButton() == MouseButton.PRIMARY && !isDrawing &&  action != ClickMode.INTERACT) {
+                if(m.getButton() == MouseButton.PRIMARY && !isDrawing && action != ClickMode.INTERACT) {
+                    System.out.println("BEGIN DRAW");
                     isDrawing = true;
                     switch (action) {
                         case LINE:
-                            newShape(new MyLine(VectorScene.this, layer, m.getX(), m.getY(), strokeColor));
+                            newShape(new MyLine(VectorScene.this, layer, m.getX(), m.getY(), strokeColor, strokeWidth));
                             break;
                         case CIRCLE:
-                            newShape(new MyCircle(VectorScene.this, layer, m.getX(), m.getY(), 0, strokeColor, fillColor));
+                            newShape(new MyCircle(VectorScene.this, layer, m.getX(), m.getY(), 0, strokeColor, fillColor, strokeWidth));
                             break;
                         case RECTANGLE:
-                            newShape(new MyRectangle(VectorScene.this, layer, m.getX(), m.getY(), 0, 0, strokeColor, fillColor));
+                            newShape(new MyRectangle(VectorScene.this, layer, m.getX(), m.getY(), 0, 0, strokeColor, fillColor, strokeWidth));
                             break;
                     }
                 } else if(m.getButton() == MouseButton.PRIMARY && isDrawing){
+                    System.out.println("END DRAW");
                     isDrawing = false;
                 }
                 if(m.getButton() == MouseButton.SECONDARY && isDrawing){
+                    System.out.println("ABORT DRAW");
                     removeUnfinishedShape();
                 }
             }
@@ -159,6 +164,14 @@ public class VectorScene extends Pane {
 
     public void setStrokeColor(Color c){
         strokeColor = c;
+    }
+
+    public ArrayList<IShape> getContent(){
+        return content;
+    }
+
+    public void setStrokeWidth(int sw){
+        strokeWidth = sw;
     }
 }
 

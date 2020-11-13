@@ -6,14 +6,17 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import misc.Others;
 
-public class MyRectangle extends Rectangle implements IShape {
+import java.io.Serializable;
+
+public class MyRectangle extends Rectangle implements IShape{
     private VectorScene scene;
     private int layer;
     // These are needed because rectangles can only be draw in one direction (for some reason), so middle point needs to be adjusted
     private double originX, originY;
 
-    public MyRectangle(VectorScene sc, int l, double ox, double oy, double width, double height, Color stroke, Color fill){
+    public MyRectangle(VectorScene sc, int l, double ox, double oy, double width, double height, Color stroke, Color fill, int strokeWidth){
         scene = sc;
         layer = l;
         setX(ox);
@@ -24,6 +27,7 @@ public class MyRectangle extends Rectangle implements IShape {
         setWidth(width);
         setFill(fill);
         setStroke(stroke);
+        setStrokeWidth(strokeWidth);
 
         // Placeholder -> When user clicks, something happens
         setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -59,5 +63,14 @@ public class MyRectangle extends Rectangle implements IShape {
     @Override
     public void move(double ox, double oy){
 
+    }
+
+    @Override
+    public String toSvg(){
+        String stroke = Others.getHtmlColor((Color) getStroke());
+        String fill = Others.getHtmlColor((Color) getFill());
+        return "<rect x=\"" + getX() + "\" y=\"" + getY() + "\" width=\"" + (int) getWidth() +
+                "\" height=\"" + getHeight() + "\" fill-opacity=\"" + (int) getOpacity() + "\" stroke-width=\"" +
+                (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
     }
 }

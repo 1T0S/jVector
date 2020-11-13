@@ -1,6 +1,7 @@
 package custom_shapes;
 
-public interface IShape {
+
+public interface IShape{
     /**
      * <p>When shapes are moved, they need to perform some calculations to adjust properly.</p>
      * <p>This method is used by EventListener of shapes.</p>
@@ -16,4 +17,12 @@ public interface IShape {
      * @param my Mouse coordinate y
      */
     void adjust(double mx, double my);
+
+    /**
+     * <p>Returns valid svg format of shape</p>
+     */
+    // Svg reference
+    // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
+    // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
+    String toSvg();
 }
