@@ -43,7 +43,7 @@ public class Controller implements Initializable {
     @FXML
     private MenuItem menuItemSaveSvg;
     @FXML
-    private Spinner spinnerStrokeWidth;
+    private Spinner spinnerStrokeWidth, spinnerCurrentLayer;
 
     // On init
     @Override
@@ -65,25 +65,24 @@ public class Controller implements Initializable {
             First I had to create SpinnerValueFactory to set its min value, max value and init value.
             Uses event listener to change canvas stroke when user interacts with the spinner.
          */
-        SpinnerValueFactory<Integer> svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 25, 1);
-        spinnerStrokeWidth.setValueFactory(svf);
+        SpinnerValueFactory<Integer> svfStrokeWidth = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 25, 1);
+        spinnerStrokeWidth.setValueFactory(svfStrokeWidth);
         spinnerStrokeWidth.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                scene.setStrokeWidth((Integer) spinnerStrokeWidth.getValue());
             }
         });
-    }
 
-    /**
-     * Test only -> Will be removed
-     */
-    @FXML
-    public void showContent(){
-        scene.showContent();
-        for(Node n : b.getChildren()){
-            System.out.println(n);
-        }
+        // Layer spinner -> Determines on which layers are objects initialized
+        SpinnerValueFactory<Integer> svfCurrentLayer = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 6, 0);
+        spinnerCurrentLayer.setValueFactory(svfCurrentLayer);
+        spinnerCurrentLayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                scene.setLayer((Integer) spinnerCurrentLayer.getValue());
+            }
+        });
     }
 
     @FXML

@@ -4,33 +4,32 @@ import custom_shapes.IShape;
 import custom_shapes.MyCircle;
 import custom_shapes.MyLine;
 import custom_shapes.MyRectangle;
-import init.Controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class VectorScene extends Pane{
     // Holds information about action that happens after left clicking the vector scene
     private ClickMode action;
-    // Holds all shapes that are currently present in vector scene
-    private ArrayList<IShape> content = new ArrayList<>();
+    // Holds all layers that hold shapes
+    private ArrayList<ArrayList<IShape>> content = new ArrayList<>();
     // Colors of object fill and object stroke
     private Color fillColor;
     private Color strokeColor;
     private int strokeWidth;
-    // Checks whether user is drawing -> prevents duplicates
+    // Checks whether an action is taking place -> Prevents duplicates and glitches
     private boolean isDrawing = false;
+    private boolean isMoving = false;
     // Currently picked shape -> determines what shapes are meant to be edited
     private IShape currentShape;
     //  Current layer where shapes will be placed
     private int layer;
-
+    // Checks whether nodes can be moved or not
+    private static final String checkMovable = "package custom_shapes";
 
     /**
      *  <p>Initializes custom vector scene component. Adds click and drag listeners, these are used for drawing shapes.</p>
@@ -41,31 +40,52 @@ public class VectorScene extends Pane{
         strokeColor = Color.BLACK;
         strokeWidth = 1;
 
+        // Init 7 layers
+        for(int i = 0; i < 7; i++){
+            content.add(new ArrayList<IShape>());
+        }
+
         // When user clicks the scene with left button and user is not drawing, a shape is added to both scene and its content.
         setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent m) {
-                if(m.getButton() == MouseButton.PRIMARY && !isDrawing && action != ClickMode.INTERACT) {
-                    System.out.println("BEGIN DRAW");
-                    isDrawing = true;
-                    switch (action) {
-                        case LINE:
-                            newShape(new MyLine(VectorScene.this, layer, m.getX(), m.getY(), strokeColor, strokeWidth));
-                            break;
-                        case CIRCLE:
-                            newShape(new MyCircle(VectorScene.this, layer, m.getX(), m.getY(), 0, strokeColor, fillColor, strokeWidth));
-                            break;
-                        case RECTANGLE:
-                            newShape(new MyRectangle(VectorScene.this, layer, m.getX(), m.getY(), 0, 0, strokeColor, fillColor, strokeWidth));
-                            break;
+                if(action == ClickMode.INTERACT){
+
+                } else if(action == ClickMode.MOVE){
+                    if(m.getButton() == MouseButton.PRIMARY && !isMoving){
+                        if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
+                            currentShape = (IShape) m.getPickResult().getIntersectedNode();
+                            System.out.println("BEGIN MOVE");
+                            isMoving = true;
+                        }
+                    } else if(m.getButton() == MouseButton.PRIMARY && isMoving){
+                        System.out.println("END MOVE");
+                        isMoving = false;
                     }
-                } else if(m.getButton() == MouseButton.PRIMARY && isDrawing){
-                    System.out.println("END DRAW");
-                    isDrawing = false;
-                }
-                if(m.getButton() == MouseButton.SECONDARY && isDrawing){
-                    System.out.println("ABORT DRAW");
-                    removeUnfinishedShape();
+                } else{
+                    if(m.getButton() == MouseButton.PRIMARY && !isDrawing) {
+                        System.out.println("BEGIN DRAW");
+                        isDrawing = true;
+                        switch (action) {
+                            case LINE:
+                                newShape(new MyLine(VectorScene.this, layer, m.getX(), m.getY(), strokeColor, strokeWidth));
+                                break;
+                            case CIRCLE:
+                                newShape(new MyCircle(VectorScene.this, layer, m.getX(), m.getY(), 0, strokeColor, fillColor, strokeWidth));
+                                break;
+                            case RECTANGLE:
+                                newShape(new MyRectangle(VectorScene.this, layer, m.getX(), m.getY(), 0, 0, strokeColor, fillColor, strokeWidth));
+                                break;
+                        }
+                    } else if(m.getButton() == MouseButton.PRIMARY && isDrawing){
+                        System.out.println("END DRAW");
+                        isDrawing = false;
+                        currentShape = null;
+                    }
+                    if(m.getButton() == MouseButton.SECONDARY && isDrawing){
+                        System.out.println("ABORT DRAW");
+                        removeUnfinishedShape();
+                    }
                 }
             }
         });
@@ -75,15 +95,15 @@ public class VectorScene extends Pane{
         setOnMouseMoved(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent m) {
-                if(isDrawing){
-                    switch(action){
-                        case INTERACT:
-                            break;
-                        case LINE:
-                        case CIRCLE:
-                        case RECTANGLE:
-                            currentShape.adjust(m.getX(), m.getY());
-                            break;
+                if(action == ClickMode.INTERACT){
+
+                } else if(action == ClickMode.MOVE){
+                    if(isMoving){
+                        currentShape.move(m.getX(), m.getY());
+                    }
+                } else{
+                    if(isDrawing){
+                        currentShape.adjust(m.getX(), m.getY());
                     }
                 }
             }
@@ -95,18 +115,21 @@ public class VectorScene extends Pane{
      * @see #VectorScene
      */
     private void newShape(IShape shape){
-        content.add(shape);
-        getChildren().add((Shape) shape);
         currentShape = shape;
+        content.get(layer).add(shape);
+        renderContent();
     }
 
     /**
      * <p>If shapes from content are not present on canvas, render them</p>
      */
     private void renderContent(){
-        for(IShape shape : content){
-            if(!getChildren().contains(shape)){
-                getChildren().add((Shape) shape);
+        getChildren().clear();
+        for(ArrayList<IShape> arr : content){
+            for(IShape shape : arr){
+                if(!getChildren().contains(shape)){
+                    getChildren().add((Shape) shape);
+                }
             }
         }
     }
@@ -131,18 +154,9 @@ public class VectorScene extends Pane{
      */
     private void removeUnfinishedShape(){
         isDrawing = false;
-        content.remove(currentShape);
+        content.get(currentShape.getLayer()).remove(currentShape);
         getChildren().remove(currentShape);
         currentShape = null;
-    }
-
-    /**
-     * Test only -> Will be removed
-     */
-    public void showContent(){
-        for(int i = 0; i < content.size(); i++){
-            System.out.println("[" + i + "]\t->\t" + content.get(i));
-        }
     }
 
 
@@ -166,12 +180,17 @@ public class VectorScene extends Pane{
         strokeColor = c;
     }
 
-    public ArrayList<IShape> getContent(){
+    public ArrayList<ArrayList<IShape>> getContent(){
         return content;
     }
 
     public void setStrokeWidth(int sw){
         strokeWidth = sw;
+    }
+
+    public void setLayer(int l){
+        layer = l;
+        System.out.println(layer);
     }
 }
 

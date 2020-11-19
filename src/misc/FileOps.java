@@ -35,9 +35,11 @@ public class FileOps {
         fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
         fw.write("<svg\nversion=\"1.1\"\nheight=\"" + (int) scene.getHeight() + "\"\nwidth=\"" + (int) scene.getWidth() + "\"\n" + ">\n");
         // Iterate throught objects on canvas, save them
-        for(IShape shape : scene.getContent()){
-            System.out.println(shape.toSvg());
-            fw.write(shape.toSvg());
+        for(ArrayList<IShape> arr : scene.getContent()){
+            for(IShape shape : arr){
+                System.out.println(shape.toSvg());
+                fw.write(shape.toSvg());
+            }
         }
         // End svg file
         fw.write("</svg>");

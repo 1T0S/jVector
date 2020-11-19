@@ -60,4 +60,9 @@ public class MyCircle extends Circle implements IShape{
                 "\" fill-opacity=\"" + (int) getOpacity() + "\" stroke-width=\"" +
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
     }
+
+    // Getters
+    public int getLayer(){
+        return layer;
+    }
 }

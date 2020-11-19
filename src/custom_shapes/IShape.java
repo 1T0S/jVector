@@ -25,4 +25,6 @@ public interface IShape{
     // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
     // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
     String toSvg();
+
+    int getLayer();
 }

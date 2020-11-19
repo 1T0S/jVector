@@ -62,7 +62,7 @@ public class MyRectangle extends Rectangle implements IShape{
 
     @Override
     public void move(double ox, double oy){
-
+        System.out.println("WORK IN PROGRESS");
     }
 
     @Override
@@ -72,5 +72,10 @@ public class MyRectangle extends Rectangle implements IShape{
         return "<rect x=\"" + getX() + "\" y=\"" + getY() + "\" width=\"" + (int) getWidth() +
                 "\" height=\"" + getHeight() + "\" fill-opacity=\"" + (int) getOpacity() + "\" stroke-width=\"" +
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
+    }
+
+    // Getters
+    public int getLayer(){
+        return layer;
     }
 }
