@@ -9,10 +9,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import java.util.ArrayList;
 
-public class VectorScene extends Pane{
+public class VectorScene extends Pane {
     // Holds information about action that happens after left clicking the vector scene
     private ClickMode action;
     // Holds all layers that hold shapes
@@ -35,6 +38,9 @@ public class VectorScene extends Pane{
      *  <p>Initializes custom vector scene component. Adds click and drag listeners, these are used for drawing shapes.</p>
      */
     public VectorScene(){
+        // Make dynamically added shapes NOT overflow
+        setClip(new Rectangle(995, 720));
+
         action = ClickMode.INTERACT;
         fillColor = Color.color(0, 0, 0, 0);
         strokeColor = Color.BLACK;
@@ -160,6 +166,10 @@ public class VectorScene extends Pane{
     }
 
 
+    public void addLayer(){
+        content.add(new ArrayList<IShape>());
+    }
+
     /*
     Getters and setters
     Nothing interesting here
@@ -191,6 +201,57 @@ public class VectorScene extends Pane{
     public void setLayer(int l){
         layer = l;
         System.out.println(layer);
+    }
+
+    public int getLayer(){
+        return content.size();
+    }
+
+
+    /*
+        IO  -> Garbage code, WIP.
+     */
+    public void readLine(String[] params){
+        MyLine currentLine = new MyLine();
+        newShape(currentLine);
+        currentLine.setStartX(Double.parseDouble(params[2]));
+        currentLine.setStartY(Double.parseDouble(params[4]));
+        currentLine.setEndX(Double.parseDouble(params[6]));
+        currentLine.setEndY(Double.parseDouble(params[8]));
+        currentLine.setOpacity(Double.parseDouble(params[10]));
+        currentLine.setStrokeWidth(Double.parseDouble(params[12]));
+        currentLine.setStroke(Color.valueOf(params[14]));
+        currentLine.setLayer(Integer.parseInt(params[16]));
+        currentShape = null;
+    }
+
+    public void readRectangle(String[] params){
+        MyRectangle currentRectangle = new MyRectangle();
+        newShape(currentRectangle);
+        currentRectangle.setX(Double.parseDouble(params[2]));
+        currentRectangle.setY(Double.parseDouble(params[4]));
+        currentRectangle.setWidth(Double.parseDouble(params[6]));
+        currentRectangle.setHeight(Double.parseDouble(params[8]));
+        currentRectangle.setOpacity(Double.parseDouble(params[10]));
+        currentRectangle.setStrokeWidth(Double.parseDouble(params[12]));
+        currentRectangle.setStroke(Color.valueOf(params[14]));
+        currentRectangle.setFill(Color.valueOf(params[16]));
+        currentRectangle.setLayer(Integer.parseInt(params[18]));
+        currentShape = null;
+    }
+
+    public void readCircle(String params[]){
+        MyCircle currentCircle = new MyCircle();
+        newShape(currentCircle);
+        currentCircle.setCenterX(Double.parseDouble(params[2]));
+        currentCircle.setCenterY(Double.parseDouble(params[4]));
+        currentCircle.setRadius(Double.parseDouble(params[6]));
+        currentCircle.setOpacity(Double.parseDouble(params[10]));
+        currentCircle.setStrokeWidth(Double.parseDouble(params[12]));
+        currentCircle.setStroke(Color.valueOf(params[14]));
+        currentCircle.setFill(Color.valueOf(params[16]));
+        currentCircle.setLayer(Integer.parseInt(params[18]));
+        currentShape = null;
     }
 }
 

@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import misc.FileOps;
 
 import java.io.IOException;
@@ -32,16 +33,17 @@ public class Controller implements Initializable {
     @FXML
     private VectorScene scene = new VectorScene();
     @FXML
-    private Button buttonActionInteract, buttonActionLine, buttonActionCircle, buttonActionRectangle, buttonActionMove;
+    private Button buttonActionInteract, buttonActionLine, buttonActionCircle, buttonActionRectangle, buttonActionMove,
+            buttonAddLayer;
     @FXML
     private Label labelAction;
     // https://docs.oracle.com/javafx/2/ui_controls/color-picker.htm
     @FXML
     private ColorPicker colorPickerFill, colorPickerStroke;
     @FXML
-    BorderPane b;
+    private BorderPane b;
     @FXML
-    private MenuItem menuItemSaveSvg;
+    private MenuItem menuItemSaveSvg, menuItemSaveJvgf;
     @FXML
     private Spinner spinnerStrokeWidth, spinnerCurrentLayer;
 
@@ -121,8 +123,30 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    public void addLayer(){
+        System.out.println("Layer added");
+        scene.addLayer();
+        SpinnerValueFactory.IntegerSpinnerValueFactory vf = (SpinnerValueFactory.IntegerSpinnerValueFactory) spinnerCurrentLayer.getValueFactory();
+        vf.setMax(vf.getMax() + 1);
+    }
+
+    @FXML
     public void saveSvg() throws IOException {
         FileOps.getSvg(scene);
+    }
+
+    @FXML
+    public void saveJvgf() throws IOException {
+        FileOps.getJvgf(scene);
+    }
+
+    @FXML
+    public void openJvgf() throws IOException{
+        int layers = FileOps.readJvgf(scene);
+        SpinnerValueFactory.IntegerSpinnerValueFactory vf = (SpinnerValueFactory.IntegerSpinnerValueFactory) spinnerCurrentLayer.getValueFactory();
+        while(layers > vf.getMax()){
+            addLayer();
+        }
     }
 
 }

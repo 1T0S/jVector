@@ -36,6 +36,8 @@ public class MyLine extends Line implements IShape{
         });
     }
 
+    public MyLine(){}
+
     @Override
     public void adjust(double mx, double my) {
         setEndX(mx);
@@ -65,8 +67,17 @@ public class MyLine extends Line implements IShape{
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\"/>\n";
     }
 
+    public String toJvgf(){
+        String stroke = Others.getHtmlColor((Color) getStroke());
+        return "LINE begin_x " + getStartX() + " begin_y " + getStartY() + " end_x " + getEndX() + " end_y " + getEndY() +
+                " fill_opacity " + getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " layer " + layer + "\n";
+    }
+
     // Getters
     public int getLayer(){
         return layer;
+    }
+    public void setLayer(int l){
+        layer = l;
     }
 }

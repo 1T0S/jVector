@@ -35,6 +35,8 @@ public class MyCircle extends Circle implements IShape{
         });
     }
 
+    public MyCircle(){}
+
     /**
      * <p>Sets radius of circle by alculating Pythagorean theorem</p>
      * @param mx Mouse coordinate x
@@ -61,8 +63,18 @@ public class MyCircle extends Circle implements IShape{
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
     }
 
+    public String toJvgf(){
+        String stroke = Others.getHtmlColor((Color) getStroke());
+        String fill = Others.getHtmlColor((Color) getFill());
+        return "CIRCLE center_x " + getCenterX() + " center_y " + getCenterY() + " radius " + getRadius() + " fill_opacity " +
+                getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " fill " + fill + " layer " + layer + "\n";
+    }
+
     // Getters
     public int getLayer(){
         return layer;
+    }
+    public void setLayer(int l){
+        layer = l;
     }
 }

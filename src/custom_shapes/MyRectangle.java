@@ -40,6 +40,8 @@ public class MyRectangle extends Rectangle implements IShape{
         });
     }
 
+    public MyRectangle(){}
+
 
     @Override
     public void adjust(double mx, double my){
@@ -74,8 +76,18 @@ public class MyRectangle extends Rectangle implements IShape{
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
     }
 
+    public String toJvgf(){
+        String stroke = Others.getHtmlColor((Color) getStroke());
+        String fill = Others.getHtmlColor((Color) getFill());
+        return "RECTANGLE origin_x " + getX() + " origin_y " + getY() + " width " + getWidth() + " height " + getHeight() +
+                " fill_opacity " + getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " fill " + fill + " layer " + layer + "\n";
+    }
+
     // Getters
     public int getLayer(){
         return layer;
+    }
+    public void setLayer(int l){
+        layer = l;
     }
 }

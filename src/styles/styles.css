@@ -19,6 +19,10 @@
     -fx-background-insets: 0, 1;
 }
 
+.top{
+    -fx-background-color: #2a2a2d;
+}
+
 .color-picker .color-picker-label .text {
     visibility: false;
 }
@@ -295,7 +299,7 @@
 
 /* Menu */
 .menu-bar {
-    -fx-background-color: #2D2D30;
+    -fx-background-color: #2A2A2C;
     -fx-border-width: 0;
 }
 .menu-bar .menu-button{
