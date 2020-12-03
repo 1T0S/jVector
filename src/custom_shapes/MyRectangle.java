@@ -64,6 +64,9 @@ public class MyRectangle extends Rectangle implements IShape{
 
     @Override
     public void move(double ox, double oy){
+        originX = ox;
+        originY = oy;
+        adjust(ox + getWidth(), oy + getHeight());
         System.out.println("WORK IN PROGRESS");
     }
 
@@ -89,5 +92,37 @@ public class MyRectangle extends Rectangle implements IShape{
     }
     public void setLayer(int l){
         layer = l;
+    }
+
+    public double getCenterX(){
+        return getX() + (getWidth() / 2);
+    }
+
+    public double getCenterY(){
+        return getY() + (getHeight() / 2);
+    }
+
+    public double getStartX(){
+        return getX();
+    }
+
+    public double getStartY(){
+        return getY();
+    }
+
+    public double getAdjustX(){
+        if(originX > getX()){
+            return originX - getWidth();
+        } else{
+            return originX + getWidth();
+        }
+    }
+
+    public double getAdjustY(){
+        if(originY > getY()){
+            return originY - getHeight();
+        } else{
+            return originY + getHeight();
+        }
     }
 }

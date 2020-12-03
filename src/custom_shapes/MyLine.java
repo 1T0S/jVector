@@ -46,15 +46,12 @@ public class MyLine extends Line implements IShape{
 
     @Override
     public void move(double ox, double oy){
-        /*
         double diffX = getStartX() - getEndX();
         double diffY = getStartY() - getEndY();
         setStartX(ox);
         setStartY(oy);
         setEndX(ox - diffX);
         setEndY(oy - diffY);
-        */
-        System.out.println("WORK IN PROGRESS");
     }
 
     // This bad boiii converts line to .svg element, spaghetti code
@@ -79,5 +76,23 @@ public class MyLine extends Line implements IShape{
     }
     public void setLayer(int l){
         layer = l;
+    }
+    
+    public double getCenterX(){
+        double diff = Math.abs(getStartX() - getEndX()) / 2;
+        return (getStartX() > getEndX()) ? getEndX() + diff : getStartX() + diff;
+    }
+    
+    public double getCenterY(){
+        double diff = Math.abs(getStartY() - getEndY()) / 2 ;
+        return (getStartY() > getEndY()) ? getEndY() + diff : getStartY() + diff;
+    }
+
+    public double getAdjustX(){
+        return getEndX();
+    }
+
+    public double getAdjustY(){
+        return getEndY();
     }
 }

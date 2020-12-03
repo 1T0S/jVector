@@ -77,4 +77,19 @@ public class MyCircle extends Circle implements IShape{
     public void setLayer(int l){
         layer = l;
     }
+
+    public double getStartX(){
+        return getCenterX();
+    }
+    public double getStartY(){
+        return getCenterY();
+    }
+
+    public double getAdjustX(){
+        return getCenterX() + getRadius();
+    }
+
+    public double getAdjustY(){
+        return getCenterY();
+    }
 }

@@ -27,6 +27,11 @@ public class VectorScene extends Pane {
     // Checks whether an action is taking place -> Prevents duplicates and glitches
     private boolean isDrawing = false;
     private boolean isMoving = false;
+    private boolean isAdjusting = false;
+    private boolean snappingStart = false;
+    private boolean snappingEnd = false;
+    // Temporary store values of object properties
+    private double xTmp, yTmp;
     // Currently picked shape -> determines what shapes are meant to be edited
     private IShape currentShape;
     //  Current layer where shapes will be placed
@@ -39,12 +44,13 @@ public class VectorScene extends Pane {
      */
     public VectorScene(){
         // Make dynamically added shapes NOT overflow
-        setClip(new Rectangle(995, 720));
+        setClip(new Rectangle(1080, 720));
 
         action = ClickMode.INTERACT;
         fillColor = Color.color(0, 0, 0, 0);
         strokeColor = Color.BLACK;
         strokeWidth = 1;
+        xTmp = yTmp = 0;
 
         // Init 7 layers
         for(int i = 0; i < 7; i++){
@@ -55,32 +61,60 @@ public class VectorScene extends Pane {
         setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent m) {
+                // Get coords
+                double x = m.getX();
+                double y = m.getY();
+                if(snappingStart && m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
+                    IShape snapTo = (IShape) m.getPickResult().getIntersectedNode();
+                    x = snapTo.getCenterX();
+                    y = snapTo.getCenterY();
+                }
+                // Handle actions
                 if(action == ClickMode.INTERACT){
 
                 } else if(action == ClickMode.MOVE){
                     if(m.getButton() == MouseButton.PRIMARY && !isMoving){
                         if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
                             currentShape = (IShape) m.getPickResult().getIntersectedNode();
+                            xTmp = currentShape.getStartX();
+                            yTmp = currentShape.getStartY();
                             System.out.println("BEGIN MOVE");
                             isMoving = true;
                         }
                     } else if(m.getButton() == MouseButton.PRIMARY && isMoving){
                         System.out.println("END MOVE");
                         isMoving = false;
+                    } else if(m.getButton() == MouseButton.SECONDARY && isMoving){
+                        stopMovingShape();
                     }
+                } else if(action == ClickMode.ADJUST){
+                        if(m.getButton() == MouseButton.PRIMARY && !isAdjusting){
+                            if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
+                                System.out.println("START ADJUSTING");
+                                currentShape = (IShape) m.getPickResult().getIntersectedNode();
+                                xTmp = currentShape.getAdjustX();
+                                yTmp = currentShape.getAdjustY();
+                                isAdjusting = true;
+                            }
+                        } else if(m.getButton() == MouseButton.PRIMARY && isAdjusting){
+                            System.out.println("END ADJUSTING");
+                            isAdjusting = false;
+                        } else if(m.getButton() == MouseButton.SECONDARY && isAdjusting){
+                            stopAdjustingShape();
+                        }
                 } else{
                     if(m.getButton() == MouseButton.PRIMARY && !isDrawing) {
                         System.out.println("BEGIN DRAW");
                         isDrawing = true;
                         switch (action) {
                             case LINE:
-                                newShape(new MyLine(VectorScene.this, layer, m.getX(), m.getY(), strokeColor, strokeWidth));
+                                newShape(new MyLine(VectorScene.this, layer, x, y, strokeColor, strokeWidth));
                                 break;
                             case CIRCLE:
-                                newShape(new MyCircle(VectorScene.this, layer, m.getX(), m.getY(), 0, strokeColor, fillColor, strokeWidth));
+                                newShape(new MyCircle(VectorScene.this, layer, x, y, 0, strokeColor, fillColor, strokeWidth));
                                 break;
                             case RECTANGLE:
-                                newShape(new MyRectangle(VectorScene.this, layer, m.getX(), m.getY(), 0, 0, strokeColor, fillColor, strokeWidth));
+                                newShape(new MyRectangle(VectorScene.this, layer, x, y, 0, 0, strokeColor, fillColor, strokeWidth));
                                 break;
                         }
                     } else if(m.getButton() == MouseButton.PRIMARY && isDrawing){
@@ -101,15 +135,26 @@ public class VectorScene extends Pane {
         setOnMouseMoved(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent m) {
+                // Get coords
+                double x = m.getX();
+                double y = m.getY();
+                if(snappingEnd && m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
+                    IShape snapTo = (IShape) m.getPickResult().getIntersectedNode();
+                    if(snapTo != currentShape){
+                        x = snapTo.getCenterX();
+                        y = snapTo.getCenterY();
+                    }
+                }
+                // Check actions
                 if(action == ClickMode.INTERACT){
 
-                } else if(action == ClickMode.MOVE){
-                    if(isMoving){
-                        currentShape.move(m.getX(), m.getY());
-                    }
-                } else{
+                } else if(action == ClickMode.MOVE && isMoving){
+                    currentShape.move(x, y);
+                } else if(action == ClickMode.ADJUST && isAdjusting){
+                    currentShape.adjust(x, y);
+                }  else{
                     if(isDrawing){
-                        currentShape.adjust(m.getX(), m.getY());
+                        currentShape.adjust(x, y);
                     }
                 }
             }
@@ -147,9 +192,12 @@ public class VectorScene extends Pane {
      * @see #removeUnfinishedShape()
      */
     public void switchMode(){
-        if(isDrawing) {
+        if(isDrawing)
             removeUnfinishedShape();
-        }
+        if(isAdjusting)
+            stopAdjustingShape();
+        if(isMoving)
+            stopMovingShape();
     }
 
     /**
@@ -163,6 +211,24 @@ public class VectorScene extends Pane {
         content.get(currentShape.getLayer()).remove(currentShape);
         getChildren().remove(currentShape);
         currentShape = null;
+    }
+
+    /**
+     *     <p> When user right clicks while adjusting shape / clicks on UI item, adjust shape to its previous size </p>
+     */
+    private void stopAdjustingShape(){
+        currentShape.adjust(xTmp, yTmp);
+        currentShape = null;
+        isAdjusting = false;
+    }
+
+    /**
+     * <p> When user right clicks while moving shape / clicks on UI item, set shape position to its previous pos</p>
+     */
+    private void stopMovingShape(){
+        currentShape.move(xTmp, yTmp);
+        currentShape = null;
+        isMoving = false;
     }
 
 
@@ -207,6 +273,14 @@ public class VectorScene extends Pane {
         return content.size();
     }
 
+    public void changeSnappingStart(boolean value){
+        snappingStart = value;
+    }
+
+    public void changeSnappingEnd(boolean value){
+        snappingEnd = value;
+    }
+
 
     /*
         IO  -> Garbage code, WIP.
@@ -246,11 +320,11 @@ public class VectorScene extends Pane {
         currentCircle.setCenterX(Double.parseDouble(params[2]));
         currentCircle.setCenterY(Double.parseDouble(params[4]));
         currentCircle.setRadius(Double.parseDouble(params[6]));
-        currentCircle.setOpacity(Double.parseDouble(params[10]));
-        currentCircle.setStrokeWidth(Double.parseDouble(params[12]));
-        currentCircle.setStroke(Color.valueOf(params[14]));
-        currentCircle.setFill(Color.valueOf(params[16]));
-        currentCircle.setLayer(Integer.parseInt(params[18]));
+        currentCircle.setOpacity(Double.parseDouble(params[8]));
+        currentCircle.setStrokeWidth(Double.parseDouble(params[10]));
+        currentCircle.setStroke(Color.valueOf(params[12]));
+        currentCircle.setFill(Color.valueOf(params[14]));
+        currentCircle.setLayer(Integer.parseInt(params[16]));
         currentShape = null;
     }
 }

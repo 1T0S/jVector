@@ -34,7 +34,9 @@ public class Controller implements Initializable {
     private VectorScene scene = new VectorScene();
     @FXML
     private Button buttonActionInteract, buttonActionLine, buttonActionCircle, buttonActionRectangle, buttonActionMove,
-            buttonAddLayer;
+            buttonAddLayer, buttonAdjust;
+    @FXML
+    private CheckBox checkboxSnappingStart, checkboxSnappingEnd;
     @FXML
     private Label labelAction;
     // https://docs.oracle.com/javafx/2/ui_controls/color-picker.htm
@@ -89,36 +91,43 @@ public class Controller implements Initializable {
 
     @FXML
     public void switchActionInteract(){
-        scene.setClickMode(ClickMode.INTERACT);
         scene.switchMode();
+        scene.setClickMode(ClickMode.INTERACT);
         labelAction.setText("Mode: Interact");
     }
 
     @FXML
-    public void switchActionLine(){
-        scene.setClickMode(ClickMode.LINE);
+    public void switchActionAdjust(){
         scene.switchMode();
+        scene.setClickMode(ClickMode.ADJUST);
+        labelAction.setText("Mode: Adjust");
+    }
+
+    @FXML
+    public void switchActionLine(){
+        scene.switchMode();
+        scene.setClickMode(ClickMode.LINE);
         labelAction.setText("Mode: Line");
     }
 
     @FXML
     public void switchActionCircle(){
-        scene.setClickMode(ClickMode.CIRCLE);
         scene.switchMode();
+        scene.setClickMode(ClickMode.CIRCLE);
         labelAction.setText("Mode: Circle");
     }
 
     @FXML
     public void switchActionRectangle(){
-        scene.setClickMode(ClickMode.RECTANGLE);
         scene.switchMode();
+        scene.setClickMode(ClickMode.RECTANGLE);
         labelAction.setText("Mode: Rectangle");
     }
 
     @FXML
     public void switchActionMove(){
-        scene.setClickMode(ClickMode.MOVE);
         scene.switchMode();
+        scene.setClickMode(ClickMode.MOVE);
         labelAction.setText("Mode: Move");
     }
 
@@ -147,6 +156,16 @@ public class Controller implements Initializable {
         while(layers > vf.getMax()){
             addLayer();
         }
+    }
+
+    @FXML
+    public void changeSnappingStart(){
+        scene.changeSnappingStart(checkboxSnappingStart.isSelected());
+    }
+
+    @FXML
+    public void changeSnappingEnd(){
+        scene.changeSnappingEnd(checkboxSnappingEnd.isSelected());
     }
 
 }

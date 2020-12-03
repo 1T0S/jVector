@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -10,29 +11,34 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <?import custom_components.VectorScene?>
-<BorderPane fx:id="b" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="init.Controller">
+<BorderPane fx:id="b" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1365.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="init.Controller">
     <bottom>
-        <HBox fx:id="hboxBottom" prefHeight="45.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+        <HBox fx:id="hboxBottom" prefHeight="45.0" prefWidth="1365.0" styleClass="bottom" BorderPane.alignment="CENTER">
             <children>
             <Label fx:id="labelAction" alignment="CENTER" prefHeight="45.0" prefWidth="150.0" styleClass="big-text" text="Mode: Interact" />
             <Label alignment="CENTER" prefHeight="45.0" prefWidth="100.0" styleClass="big-text" text="Fill" textAlignment="CENTER" />
             <ColorPicker fx:id="colorPickerFill" prefHeight="63.0" prefWidth="50.0" />
             <Label alignment="CENTER" prefHeight="45.0" prefWidth="100.0" styleClass="big-text" text="Stroke" />
             <ColorPicker fx:id="colorPickerStroke" prefHeight="68.0" prefWidth="50.0" />
-            <Label alignment="CENTER" prefHeight="45.0" prefWidth="150.0" styleClass="big-text" text="Stroke Width" />
-            <Spinner fx:id="spinnerStrokeWidth" editable="false" prefHeight="45.0" prefWidth="125.0" />
-            <Label alignment="CENTER" prefHeight="45.0" prefWidth="150.0" styleClass="big-text" text="Current Layer" />
-            <Spinner fx:id="spinnerCurrentLayer" prefHeight="45.0" prefWidth="125.0" />
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="140.0" styleClass="big-text" text="Stroke Width" />
+            <Spinner fx:id="spinnerStrokeWidth" editable="false" prefHeight="45.0" prefWidth="85.0" />
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="140.0" styleClass="big-text" text="Current Layer" />
+            <Spinner fx:id="spinnerCurrentLayer" prefHeight="45.0" prefWidth="85.0" />
             <Button fx:id="buttonAddLayer" maxHeight="45.0" minHeight="45.0" mnemonicParsing="false" onAction="#addLayer" prefHeight="45.0" prefWidth="30.0" text="+" />
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="150.0" styleClass="big-text" text="Snap start" />
+            <CheckBox fx:id="checkboxSnappingStart" maxHeight="45.0" maxWidth="60.0" mnemonicParsing="false" onAction="#changeSnappingStart" prefHeight="45.0" prefWidth="60.0" />
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="150.0" styleClass="big-text" text="Snap end / action" />
+            <CheckBox fx:id="checkboxSnappingEnd" maxHeight="45.0" maxWidth="60.0" mnemonicParsing="false" onAction="#changeSnappingEnd" prefHeight="45.0" prefWidth="60.0" />
             </children>
         </HBox>
     </bottom>
     <left>
-        <VBox fx:id="vboxLeft" maxWidth="45.0" prefHeight="725.0" prefWidth="45.0" BorderPane.alignment="CENTER">
+        <VBox fx:id="vboxLeft" prefHeight="725.0" prefWidth="45.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="buttonActionInteract" mnemonicParsing="false" onAction="#switchActionInteract" prefHeight="25.0" prefWidth="51.0" text="NIL">
                <font>
@@ -42,6 +48,11 @@
                <font>
                   <Font size="10.0" />
                </font></Button>
+            <Button fx:id="buttonAdjust" maxHeight="25.0" maxWidth="45.0" minHeight="25.0" minWidth="45.0" mnemonicParsing="false" onAction="#switchActionAdjust" prefHeight="25.0" prefWidth="45.0" text="ADJ">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
             <Button fx:id="buttonActionLine" mnemonicParsing="false" onAction="#switchActionLine" prefHeight="25.0" prefWidth="56.0" text="LINE">
                <font>
                   <Font size="10.0" />
@@ -59,14 +70,14 @@
         </VBox>
     </left>
     <right>
-        <AnchorPane fx:id="paneRight" prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="paneRight" maxWidth="240.0" prefHeight="200.0" prefWidth="240.0" BorderPane.alignment="CENTER">
             <children>
-                <Label alignment="CENTER" layoutX="14.0" layoutY="6.0" maxWidth="225.0" prefHeight="693.0" prefWidth="323.0" styleClass="big-text" text="Placeholder - Shape info" />
+                <Label alignment="CENTER" layoutX="10.0" layoutY="6.0" prefHeight="693.0" prefWidth="229.0" styleClass="big-text" text="Placeholder - Shape info" />
             </children>
         </AnchorPane>
     </right>
     <top>
-        <MenuBar prefHeight="45.0" prefWidth="1280.0" styleClass="top" BorderPane.alignment="CENTER">
+        <MenuBar prefHeight="45.0" prefWidth="1365.0" styleClass="top" BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -89,6 +100,6 @@
         </MenuBar>
     </top>
    <center>
-      <VectorScene fx:id="scene" maxHeight="720.0" maxWidth="1010.0" prefHeight="720.0" prefWidth="995.0" styleClass="vector-scene" BorderPane.alignment="CENTER" />
+      <VectorScene fx:id="scene" maxHeight="720.0" maxWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" styleClass="vector-scene" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

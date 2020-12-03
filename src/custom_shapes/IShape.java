@@ -28,5 +28,14 @@ public interface IShape{
 
     String toJvgf();
 
+    // Needed for snapping -> Every shape has different center coords
+    double getCenterX();
+    double getCenterY();
+    // Needed for moving -> Every shape has different start coords
+    double getStartX();
+    double getStartY();
+    // Needed for adjusting -> Every shape has different size parameters
+    double getAdjustX();
+    double getAdjustY();
     int getLayer();
 }

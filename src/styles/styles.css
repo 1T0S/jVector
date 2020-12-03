@@ -19,7 +19,7 @@
     -fx-background-insets: 0, 1;
 }
 
-.top{
+.top, .bottom{
     -fx-background-color: #2a2a2d;
 }
 

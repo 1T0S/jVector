@@ -1,5 +1,5 @@
 package custom_components;
 
 public enum ClickMode {
-    INTERACT, LINE, RECTANGLE, CIRCLE, MOVE
+    INTERACT, LINE, RECTANGLE, CIRCLE, MOVE, ADJUST
 }
