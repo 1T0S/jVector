@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
@@ -7,8 +8,9 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -16,6 +18,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import custom_components.VectorScene?>
+<?import custom_components.InfoPane?>
 <BorderPane fx:id="b" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1365.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="init.Controller">
     <bottom>
         <HBox fx:id="hboxBottom" prefHeight="45.0" prefWidth="1365.0" styleClass="bottom" BorderPane.alignment="CENTER">
@@ -69,13 +72,6 @@
          </children>
         </VBox>
     </left>
-    <right>
-        <AnchorPane fx:id="paneRight" maxWidth="240.0" prefHeight="200.0" prefWidth="240.0" BorderPane.alignment="CENTER">
-            <children>
-                <Label alignment="CENTER" layoutX="10.0" layoutY="6.0" prefHeight="693.0" prefWidth="229.0" styleClass="big-text" text="Placeholder - Shape info" />
-            </children>
-        </AnchorPane>
-    </right>
     <top>
         <MenuBar prefHeight="45.0" prefWidth="1365.0" styleClass="top" BorderPane.alignment="CENTER">
             <menus>
@@ -102,4 +98,120 @@
    <center>
       <VectorScene fx:id="scene" maxHeight="720.0" maxWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" styleClass="vector-scene" BorderPane.alignment="CENTER" />
    </center>
+   <right>
+      <InfoPane fx:id="paneRight" maxWidth="240.0" prefHeight="200.0" prefWidth="240.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" maxWidth="240.0" prefHeight="30.0" prefWidth="240.0" styleClass="big-text" text="Shape Info" />
+            <HBox prefHeight="30.0" prefWidth="240.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="80.0" text="Start X">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="tfStartX" maxWidth="120.0" prefHeight="30.0" prefWidth="120.0">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="240.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="80.0" text="Start Y">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="tfStartY" maxWidth="120.0" prefHeight="30.0" prefWidth="120.0">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="240.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="44.0" prefWidth="80.0" text="Opacity">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Slider fx:id="sliderOpacity" blockIncrement="0.05" majorTickUnit="0.5" max="1.0" maxWidth="120.0" minorTickCount="0" prefWidth="120.0" showTickLabels="true" showTickMarks="true" value="1.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="240.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="80.0" text="Stroke Width">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="tfLineWidth" maxWidth="120.0" prefHeight="30.0" prefWidth="120.0">
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="240.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="80.0" text="Shape Color">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ColorPicker fx:id="colorPickerShapeColor" maxWidth="120.0" prefHeight="30.0" prefWidth="120.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="240.0">
+               <children>
+                  <Label fx:id="colorPickerShapeColor1" alignment="CENTER" prefHeight="30.0" prefWidth="80.0" text="Stroke Color">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ColorPicker fx:id="colorPickerStrokeColor" maxWidth="120.0" prefHeight="30.0" prefWidth="120.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="240.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="80.0" text="Layer">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Spinner fx:id="spinnerShapeLayer" maxWidth="120.0" prefHeight="30.0" prefWidth="120.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </InfoPane>
+   </right>
 </BorderPane>

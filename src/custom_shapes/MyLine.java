@@ -24,16 +24,6 @@ public class MyLine extends Line implements IShape{
         setStroke(stroke);
         setStrokeWidth(strokeWidth);
         System.out.println(scene.getHeight());
-
-        // Placeholder -> When user clicks, something happens
-        setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(scene.getClickMode() == ClickMode.INTERACT){
-                    setStrokeWidth(getStrokeWidth() + 1);
-                }
-            }
-        });
     }
 
     public MyLine(){}

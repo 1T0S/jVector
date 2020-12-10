@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
         root.getStylesheets().add("styles/styles.css");
-        primaryStage.setTitle("jVGE");
+        primaryStage.setTitle("Paint 5D");
         //primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 1365, 810));
         primaryStage.show();

@@ -28,16 +28,6 @@ public class MyRectangle extends Rectangle implements IShape{
         setFill(fill);
         setStroke(stroke);
         setStrokeWidth(strokeWidth);
-
-        // Placeholder -> When user clicks, something happens
-        setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(scene.getClickMode() == ClickMode.INTERACT){
-                    setRotate(getRotate() + 20);
-                }
-            }
-        });
     }
 
     public MyRectangle(){}
@@ -108,6 +98,14 @@ public class MyRectangle extends Rectangle implements IShape{
 
     public double getStartY(){
         return getY();
+    }
+
+    public void setStartX(double x){
+        setX(x);
+    }
+
+    public void setStartY(double y){
+        setY(y);
     }
 
     public double getAdjustX(){

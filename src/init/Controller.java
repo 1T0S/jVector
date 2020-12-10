@@ -1,20 +1,19 @@
 package init;
 
 import custom_components.ClickMode;
+import custom_components.InfoPane;
 import custom_components.VectorScene;
-import javafx.event.Event;
+import javafx.beans.NamedArg;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import jdk.nashorn.internal.objects.annotations.Constructor;
 import misc.FileOps;
 
 import java.io.IOException;
@@ -27,11 +26,7 @@ public class Controller implements Initializable {
     @FXML
     private VBox vboxLeft;
     @FXML
-    private AnchorPane paneRight;
-    @FXML
     private MenuBar menu;
-    @FXML
-    private VectorScene scene = new VectorScene();
     @FXML
     private Button buttonActionInteract, buttonActionLine, buttonActionCircle, buttonActionRectangle, buttonActionMove,
             buttonAddLayer, buttonAdjust;
@@ -48,10 +43,32 @@ public class Controller implements Initializable {
     private MenuItem menuItemSaveSvg, menuItemSaveJvgf;
     @FXML
     private Spinner spinnerStrokeWidth, spinnerCurrentLayer;
+    // Right InfoPane
+    @FXML
+    private ColorPicker colorPickerShapeColor = new ColorPicker();
+    @FXML
+    private ColorPicker colorPickerStrokeColor = new ColorPicker();
+    @FXML
+    private TextField tfStartX = new TextField();
+    @FXML
+    private TextField tfStartY = new TextField();
+    @FXML
+    private TextField tfLineWidth = new TextField();
+    @FXML
+    private Spinner spinnerShapeLayer = new Spinner();
+    @FXML
+    private Slider sliderOpacity = new Slider();
+    @FXML
+    private InfoPane paneRight = new InfoPane();
+    @FXML
+    private VectorScene scene = new VectorScene();
 
     // On init
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        scene.setInfoPane(paneRight);
+        paneRight.init(scene, spinnerShapeLayer, colorPickerShapeColor,
+                colorPickerStrokeColor, sliderOpacity, tfStartX, tfStartY, tfLineWidth);
         /*
             When user switches color, listener calls scene's setColor and changes it
             Uses lambda expression instead of anonymous class -> Thanks, Intellij IDEA!
@@ -137,6 +154,7 @@ public class Controller implements Initializable {
         scene.addLayer();
         SpinnerValueFactory.IntegerSpinnerValueFactory vf = (SpinnerValueFactory.IntegerSpinnerValueFactory) spinnerCurrentLayer.getValueFactory();
         vf.setMax(vf.getMax() + 1);
+        paneRight.addLayer();
     }
 
     @FXML

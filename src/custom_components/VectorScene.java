@@ -38,6 +38,8 @@ public class VectorScene extends Pane {
     private int layer;
     // Checks whether nodes can be moved or not
     private static final String checkMovable = "package custom_shapes";
+    // InfoPanes are tied with VectorScenes -> Shapes can be easily adjusted
+    private InfoPane infoPane;
 
     /**
      *  <p>Initializes custom vector scene component. Adds click and drag listeners, these are used for drawing shapes.</p>
@@ -71,11 +73,15 @@ public class VectorScene extends Pane {
                 }
                 // Handle actions
                 if(action == ClickMode.INTERACT){
-
+                    if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
+                        currentShape = (IShape) m.getPickResult().getIntersectedNode();
+                        infoPane.setShape(currentShape);
+                    }
                 } else if(action == ClickMode.MOVE){
                     if(m.getButton() == MouseButton.PRIMARY && !isMoving){
                         if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
                             currentShape = (IShape) m.getPickResult().getIntersectedNode();
+                            infoPane.setShape(currentShape);
                             xTmp = currentShape.getStartX();
                             yTmp = currentShape.getStartY();
                             System.out.println("BEGIN MOVE");
@@ -92,6 +98,7 @@ public class VectorScene extends Pane {
                             if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
                                 System.out.println("START ADJUSTING");
                                 currentShape = (IShape) m.getPickResult().getIntersectedNode();
+                                infoPane.setShape(currentShape);
                                 xTmp = currentShape.getAdjustX();
                                 yTmp = currentShape.getAdjustY();
                                 isAdjusting = true;
@@ -150,8 +157,10 @@ public class VectorScene extends Pane {
 
                 } else if(action == ClickMode.MOVE && isMoving){
                     currentShape.move(x, y);
+                    infoPane.refresh();
                 } else if(action == ClickMode.ADJUST && isAdjusting){
                     currentShape.adjust(x, y);
+                    infoPane.refresh();
                 }  else{
                     if(isDrawing){
                         currentShape.adjust(x, y);
@@ -183,6 +192,15 @@ public class VectorScene extends Pane {
                 }
             }
         }
+    }
+
+    /**
+     * <p>Changes shape layer on canvas and in ArrayList</p>
+     */
+    public void changeShapeLayer(IShape shape, int oldLayer){
+        content.get(oldLayer).remove(shape);
+        content.get(shape.getLayer()).add(shape);
+        renderContent();
     }
 
     /**
@@ -279,6 +297,10 @@ public class VectorScene extends Pane {
 
     public void changeSnappingEnd(boolean value){
         snappingEnd = value;
+    }
+
+    public void setInfoPane(InfoPane ip){
+        infoPane = ip;
     }
 
 
