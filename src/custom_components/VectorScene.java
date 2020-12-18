@@ -49,7 +49,7 @@ public class VectorScene extends Pane {
         setClip(new Rectangle(1080, 720));
 
         action = ClickMode.INTERACT;
-        fillColor = Color.color(0, 0, 0, 0);
+        fillColor = Color.AZURE;
         strokeColor = Color.BLACK;
         strokeWidth = 1;
         xTmp = yTmp = 0;
@@ -109,7 +109,12 @@ public class VectorScene extends Pane {
                         } else if(m.getButton() == MouseButton.SECONDARY && isAdjusting){
                             stopAdjustingShape();
                         }
-                } else{
+                } else if(action == ClickMode.DELETE){
+                    if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
+                        IShape del = (IShape) m.getPickResult().getIntersectedNode();
+                        removeShape(del);
+                    }
+                } else {
                     if(m.getButton() == MouseButton.PRIMARY && !isDrawing) {
                         System.out.println("BEGIN DRAW");
                         isDrawing = true;
@@ -195,12 +200,25 @@ public class VectorScene extends Pane {
     }
 
     /**
+     * <p>Removes shape from VectorScene and content</p>
+     *
+     */
+    private void removeShape(IShape shape){
+        for(ArrayList<IShape> layer : content){
+            layer.remove(shape);
+        }
+        System.out.println(getChildren().remove(shape));
+    }
+
+    /**
      * <p>Changes shape layer on canvas and in ArrayList</p>
      */
     public void changeShapeLayer(IShape shape, int oldLayer){
-        content.get(oldLayer).remove(shape);
-        content.get(shape.getLayer()).add(shape);
-        renderContent();
+        // Check whether the shape really was removed -> Prevents duplicates
+        if(content.get(oldLayer).remove(shape)){
+            content.get(shape.getLayer()).add(shape);
+            renderContent();
+        }
     }
 
     /**

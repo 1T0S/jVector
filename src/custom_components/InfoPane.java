@@ -111,6 +111,10 @@ public class InfoPane extends VBox {
         refresh();
     }
 
+    public IShape getCurrentShape(){
+        return shape;
+    }
+
     public void refresh(){
         tfStartX.setText(shape.getStartX() + "");
         tfStartY.setText(shape.getStartY() + "");

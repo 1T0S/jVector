@@ -51,7 +51,7 @@ public class MyCircle extends Circle implements IShape {
         String stroke = Others.getHtmlColor((Color) getStroke());
         String fill = Others.getHtmlColor((Color) getFill());
         return "<circle cx=\"" + (int) getCenterX() + "\" cy=\"" + (int) getCenterY() + "\" r=\"" + (int) getRadius() +
-                "\" fill-opacity=\"" + (int) getOpacity() + "\" stroke-width=\"" +
+                "\" fill-opacity=\"" + getOpacity() + "\" stroke-width=\"" +
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
     }
 

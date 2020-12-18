@@ -17,8 +17,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import custom_components.VectorScene?>
 <?import custom_components.InfoPane?>
+<?import custom_components.VectorScene?>
 <BorderPane fx:id="b" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1365.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="init.Controller">
     <bottom>
         <HBox fx:id="hboxBottom" prefHeight="45.0" prefWidth="1365.0" styleClass="bottom" BorderPane.alignment="CENTER">
@@ -52,6 +52,11 @@
                   <Font size="10.0" />
                </font></Button>
             <Button fx:id="buttonAdjust" maxHeight="25.0" maxWidth="45.0" minHeight="25.0" minWidth="45.0" mnemonicParsing="false" onAction="#switchActionAdjust" prefHeight="25.0" prefWidth="45.0" text="ADJ">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#switchActionDelete" prefHeight="25.0" prefWidth="55.0" text="DEL">
                <font>
                   <Font size="10.0" />
                </font>

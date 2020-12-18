@@ -29,7 +29,7 @@ public class Controller implements Initializable {
     private MenuBar menu;
     @FXML
     private Button buttonActionInteract, buttonActionLine, buttonActionCircle, buttonActionRectangle, buttonActionMove,
-            buttonAddLayer, buttonAdjust;
+            buttonAddLayer, buttonAdjust, buttonDelete;
     @FXML
     private CheckBox checkboxSnappingStart, checkboxSnappingEnd;
     @FXML
@@ -78,8 +78,6 @@ public class Controller implements Initializable {
         colorPickerFill.setOnAction((EventHandler) t -> scene.setFillColor(colorPickerFill.getValue()));
         //noinspection unchecked
         colorPickerStroke.setOnAction((EventHandler) t -> scene.setStrokeColor(colorPickerStroke.getValue()));
-        colorPickerFill.getCustomColors().add(new Color(0, 0, 0, 0));
-        colorPickerStroke.getCustomColors().add(new Color(0, 0, 0, 0));
 
         /*
             This spinner allows user to change width of stroke.
@@ -146,6 +144,13 @@ public class Controller implements Initializable {
         scene.switchMode();
         scene.setClickMode(ClickMode.MOVE);
         labelAction.setText("Mode: Move");
+    }
+
+    @FXML
+    public void switchActionDelete(){
+        scene.switchMode();
+        scene.setClickMode(ClickMode.DELETE);
+        labelAction.setText("Mode: Delete");
     }
 
     @FXML

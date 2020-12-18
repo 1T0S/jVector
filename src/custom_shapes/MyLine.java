@@ -50,7 +50,7 @@ public class MyLine extends Line implements IShape{
         // Convert String returned by java 0xRRGGBBOO into #RRGGBB, which is needed in svg
         String stroke = Others.getHtmlColor((Color) getStroke());
         return "<line x1=\"" + (int) getStartX() + "\" y1=\"" + (int) getStartY() + "\" x2=\"" + (int) getEndX() +
-                "\" y2=\"" + (int) getEndY() + "\" fill-opacity=\"" + (int) getOpacity() + "\" stroke-width=\"" +
+                "\" y2=\"" + (int) getEndY() + "\" fill-opacity=\"" +  getOpacity() + "\" stroke-width=\"" +
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\"/>\n";
     }
 

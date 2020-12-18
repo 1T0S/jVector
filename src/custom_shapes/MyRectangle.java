@@ -65,7 +65,7 @@ public class MyRectangle extends Rectangle implements IShape{
         String stroke = Others.getHtmlColor((Color) getStroke());
         String fill = Others.getHtmlColor((Color) getFill());
         return "<rect x=\"" + getX() + "\" y=\"" + getY() + "\" width=\"" + (int) getWidth() +
-                "\" height=\"" + getHeight() + "\" fill-opacity=\"" + (int) getOpacity() + "\" stroke-width=\"" +
+                "\" height=\"" + getHeight() + "\" fill-opacity=\"" + getOpacity() + "\" stroke-width=\"" +
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
     }
 
