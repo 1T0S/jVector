@@ -49,6 +49,8 @@ public interface IShape{
     double getStrokeWidth();
     void setStroke(Paint p);
     void setFill(Paint p);
+    double getRotate();
+    void setRotate(double rotation);
     Paint getStroke();
     Paint getFill();
 }

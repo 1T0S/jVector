@@ -1,44 +1,28 @@
 package custom_shapes;
 
-import custom_components.ClickMode;
 import custom_components.VectorScene;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Ellipse;
 import misc.Others;
 
-import java.io.Serializable;
-
-public class MyCircle extends Circle implements IShape {
-    private VectorScene scene;
+public class MyEllipse extends Ellipse implements IShape {
     private int layer;
+    private VectorScene scene;
 
-    public MyCircle(VectorScene sc, int l, double ox, double oy, double r, Color stroke, Color fill, int strokeWidth) {
+    public MyEllipse(VectorScene sc, int l, double ox, double oy, double rx, double ry, Color stroke, Color fill, int strokeWidth) {
         scene = sc;
         layer = l;
         setCenterX(ox);
         setCenterY(oy);
-        setRadius(r);
+        setRadiusX(rx);
+        setRadiusY(ry);
         setStroke(stroke);
         setFill(fill);
         setStrokeWidth(strokeWidth);
     }
 
-    public MyCircle() {
-    }
-
-    /**
-     * <p>Sets radius of circle by alculating Pythagorean theorem</p>
-     *
-     * @param mx Mouse coordinate x
-     * @param my Mouse coordinate y
-     */
-    @Override
-    public void adjust(double mx, double my) {
-        double radius = Math.sqrt(Math.pow(getCenterX() - mx, 2) + Math.pow(getCenterY() - my, 2));
-        setRadius(radius);
-    }
+    public MyEllipse(){}
 
     @Override
     public void move(double ox, double oy) {
@@ -47,52 +31,66 @@ public class MyCircle extends Circle implements IShape {
     }
 
     @Override
+    public void adjust(double mx, double my) {
+        setRadiusX(Math.abs(getCenterX() - mx));
+        setRadiusY(Math.abs(getCenterY() - my));
+    }
+
+    @Override
     public String toSvg() {
         String stroke = Others.getHtmlColor((Color) getStroke());
         String fill = Others.getHtmlColor((Color) getFill());
-        return "<circle cx=\"" + (int) getCenterX() + "\" cy=\"" + (int) getCenterY() + "\" r=\"" + (int) getRadius() +
-                "\" fill-opacity=\"" + getOpacity() + "\" stroke-width=\"" +
+        return "<ellipse cx=\"" + (int) getCenterX() + "\" cy=\"" + (int) getCenterY() + "\" rx=\"" + (int) getRadiusX() +
+                "\" ry=\"" + (int) getRadiusY() + "\" fill-opacity=\"" + getOpacity() + "\" stroke-width=\"" +
                 (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill +
                 "\" transform=\"rotate(" + getRotate() + "," + getCenterX() + "," + getCenterY() + ")\" />\n";
     }
 
+    @Override
     public String toJvgf() {
         String stroke = Others.getHtmlColor((Color) getStroke());
         String fill = Others.getHtmlColor((Color) getFill());
-        return "CIRCLE center_x " + getCenterX() + " center_y " + getCenterY() + " radius " + getRadius() + " fill_opacity " +
+        return "ELLIPSE center_x " + getCenterX() + " center_y " + getCenterY() + " radius_x " + getRadiusX() + " radius_y " + getRadiusY() + " fill_opacity " +
                 getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " fill " + fill + " layer " + layer + " rotate " + getRotate() + "\n";
     }
 
-    // Getters
-    public int getLayer() {
-        return layer;
-    }
-
-    public void setLayer(int l) {
-        layer = l;
-    }
-
+    @Override
     public double getStartX() {
         return getCenterX();
     }
 
+    @Override
     public double getStartY() {
         return getCenterY();
     }
 
+    @Override
     public void setStartX(double x) {
         setCenterX(x);
     }
 
+    @Override
     public void setStartY(double y) {
         setCenterY(y);
     }
 
+    @Override
     public double getAdjustX() {
-        return getCenterX() + getRadius();
+        return getCenterX() + getRadiusX();
     }
 
+    @Override
     public double getAdjustY() {
-        return getCenterY();
+        return getCenterY() + getRadiusY();
+    }
+
+    @Override
+    public int getLayer() {
+        return layer;
+    }
+
+    @Override
+    public void setLayer(int i) {
+        layer = i;
     }
 }

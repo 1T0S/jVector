@@ -66,14 +66,15 @@ public class MyRectangle extends Rectangle implements IShape{
         String fill = Others.getHtmlColor((Color) getFill());
         return "<rect x=\"" + getX() + "\" y=\"" + getY() + "\" width=\"" + (int) getWidth() +
                 "\" height=\"" + getHeight() + "\" fill-opacity=\"" + getOpacity() + "\" stroke-width=\"" +
-                (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill + "\" />\n";
+                (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\" fill=\"" + fill +
+                "\" transform=\"rotate(" + getRotate() + "," + getCenterX() + "," + getCenterY() + ")\" />\n";
     }
 
     public String toJvgf(){
         String stroke = Others.getHtmlColor((Color) getStroke());
         String fill = Others.getHtmlColor((Color) getFill());
         return "RECTANGLE origin_x " + getX() + " origin_y " + getY() + " width " + getWidth() + " height " + getHeight() +
-                " fill_opacity " + getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " fill " + fill + " layer " + layer + "\n";
+                " fill_opacity " + getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " fill " + fill + " layer " + layer + " rotate " + getRotate() + "\n";
     }
 
     // Getters

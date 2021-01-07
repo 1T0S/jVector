@@ -94,6 +94,9 @@ public class FileOps {
                     case "CIRCLE":
                         scene.readCircle(params);
                         break;
+                    case "ELLIPSE":
+                        scene.readEllipse(params);
+                        break;
                 }
             }
             return layer;

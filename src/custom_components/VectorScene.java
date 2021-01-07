@@ -1,9 +1,6 @@
 package custom_components;
 
-import custom_shapes.IShape;
-import custom_shapes.MyCircle;
-import custom_shapes.MyLine;
-import custom_shapes.MyRectangle;
+import custom_shapes.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -14,6 +11,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class VectorScene extends Pane {
     // Holds information about action that happens after left clicking the vector scene
@@ -40,6 +38,7 @@ public class VectorScene extends Pane {
     private static final String checkMovable = "package custom_shapes";
     // InfoPanes are tied with VectorScenes -> Shapes can be easily adjusted
     private InfoPane infoPane;
+    private ArrayList<Double> pointMatrix = new ArrayList<>();
 
     /**
      *  <p>Initializes custom vector scene component. Adds click and drag listeners, these are used for drawing shapes.</p>
@@ -49,7 +48,7 @@ public class VectorScene extends Pane {
         setClip(new Rectangle(1080, 720));
 
         action = ClickMode.INTERACT;
-        fillColor = Color.AZURE;
+        fillColor = Color.WHITE;
         strokeColor = Color.BLACK;
         strokeWidth = 1;
         xTmp = yTmp = 0;
@@ -77,6 +76,10 @@ public class VectorScene extends Pane {
                         currentShape = (IShape) m.getPickResult().getIntersectedNode();
                         infoPane.setShape(currentShape);
                     }
+                } else if(action == ClickMode.POINT && m.getButton() == MouseButton.PRIMARY){
+                    pointMatrix.add(m.getX());
+                    pointMatrix.add(m.getY());
+                    infoPane.addCoords(m.getX(), m.getY());
                 } else if(action == ClickMode.MOVE){
                     if(m.getButton() == MouseButton.PRIMARY && !isMoving){
                         if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
@@ -128,6 +131,9 @@ public class VectorScene extends Pane {
                             case RECTANGLE:
                                 newShape(new MyRectangle(VectorScene.this, layer, x, y, 0, 0, strokeColor, fillColor, strokeWidth));
                                 break;
+                            case ELLIPSE:
+                                newShape(new MyEllipse(VectorScene.this, layer, x, y, 0, 0, strokeColor, fillColor, strokeWidth));
+                                break;
                         }
                     } else if(m.getButton() == MouseButton.PRIMARY && isDrawing){
                         System.out.println("END DRAW");
@@ -159,6 +165,8 @@ public class VectorScene extends Pane {
                 }
                 // Check actions
                 if(action == ClickMode.INTERACT){
+
+                } else if(action == ClickMode.POINT){
 
                 } else if(action == ClickMode.MOVE && isMoving){
                     currentShape.move(x, y);
@@ -272,6 +280,28 @@ public class VectorScene extends Pane {
         content.add(new ArrayList<IShape>());
     }
 
+    /**
+     * <p>When user clicks on ClearMatrix button, clears all points in memory and remove text from info text area</p>
+     */
+    public void clearMatrix(){
+        pointMatrix.clear();
+        infoPane.clearPointMatrix();
+    }
+
+    public void clearLastMatrix(){
+        if(pointMatrix.size() >= 4){
+            pointMatrix.remove(pointMatrix.size() - 1);
+            pointMatrix.remove(pointMatrix.size() - 1);
+            infoPane.removePointMatrixLine();
+        }
+    }
+
+    public void createPolygon(){
+        System.out.println("!H");
+        newShape(new MyPolygon(VectorScene.this, pointMatrix, strokeColor, fillColor, strokeWidth, layer));
+        clearMatrix();
+    }
+
     /*
     Getters and setters
     Nothing interesting here
@@ -336,6 +366,7 @@ public class VectorScene extends Pane {
         currentLine.setStrokeWidth(Double.parseDouble(params[12]));
         currentLine.setStroke(Color.valueOf(params[14]));
         currentLine.setLayer(Integer.parseInt(params[16]));
+        currentLine.setRotate(Double.parseDouble(params[18]));
         currentShape = null;
     }
 
@@ -351,10 +382,11 @@ public class VectorScene extends Pane {
         currentRectangle.setStroke(Color.valueOf(params[14]));
         currentRectangle.setFill(Color.valueOf(params[16]));
         currentRectangle.setLayer(Integer.parseInt(params[18]));
+        currentRectangle.setRotate(Double.parseDouble(params[20]));
         currentShape = null;
     }
 
-    public void readCircle(String params[]){
+    public void readCircle(String[] params){
         MyCircle currentCircle = new MyCircle();
         newShape(currentCircle);
         currentCircle.setCenterX(Double.parseDouble(params[2]));
@@ -365,6 +397,23 @@ public class VectorScene extends Pane {
         currentCircle.setStroke(Color.valueOf(params[12]));
         currentCircle.setFill(Color.valueOf(params[14]));
         currentCircle.setLayer(Integer.parseInt(params[16]));
+        currentCircle.setRotate(Double.parseDouble(params[18]));
+        currentShape = null;
+    }
+
+    public void readEllipse(String[] params){
+        MyEllipse currentEllipse = new MyEllipse();
+        newShape(currentEllipse);
+        currentEllipse.setCenterX(Double.parseDouble(params[2]));
+        currentEllipse.setCenterY(Double.parseDouble(params[4]));
+        currentEllipse.setRadiusX(Double.parseDouble(params[6]));
+        currentEllipse.setRadiusY(Double.parseDouble(params[8]));
+        currentEllipse.setOpacity(Double.parseDouble(params[10]));
+        currentEllipse.setStrokeWidth(Double.parseDouble(params[12]));
+        currentEllipse.setStroke(Color.valueOf(params[14]));
+        currentEllipse.setFill(Color.valueOf(params[16]));
+        currentEllipse.setLayer(Integer.parseInt(params[18]));
+        currentEllipse.setRotate(Double.parseDouble(params[20]));
         currentShape = null;
     }
 }

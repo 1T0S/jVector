@@ -10,15 +10,15 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import custom_components.InfoPane?>
 <?import custom_components.VectorScene?>
+<?import custom_components.InfoPane?>
 <BorderPane fx:id="b" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1365.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="init.Controller">
     <bottom>
         <HBox fx:id="hboxBottom" prefHeight="45.0" prefWidth="1365.0" styleClass="bottom" BorderPane.alignment="CENTER">
@@ -70,6 +70,16 @@
                   <Font size="10.0" />
                </font></Button>
             <Button fx:id="buttonActionRectangle" mnemonicParsing="false" onAction="#switchActionRectangle" prefHeight="23.0" prefWidth="55.0" text="RECT">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonActionEllipse" mnemonicParsing="false" onAction="#switchActionEllipse" prefHeight="23.0" prefWidth="58.0" text="ELLI">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonActionPoint" mnemonicParsing="false" onAction="#switchActionPoint" prefHeight="23.0" prefWidth="56.0" text="POINT">
                <font>
                   <Font size="10.0" />
                </font>
@@ -215,6 +225,39 @@
                <VBox.margin>
                   <Insets top="5.0" />
                </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="240.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="80.0" text="Rotation">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="tfRotation" maxWidth="120.0" prefHeight="30.0" prefWidth="120.0">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Label alignment="CENTER" maxWidth="240.0" prefHeight="30.0" prefWidth="240.0" styleClass="big-text" text="Points">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Label>
+            <TextArea fx:id="textAreaPointMatrix" prefHeight="200.0" prefWidth="180.0" />
+            <HBox prefHeight="50.0" prefWidth="240.0">
+               <children>
+                  <Button fx:id="buttonPolygon" mnemonicParsing="false" onAction="#createPolygon" prefHeight="50.0" prefWidth="75.0" text="Polygon" />
+                  <Button fx:id="buttonClearLastMatrix" mnemonicParsing="false" onAction="#clearLastMatrix" prefHeight="50.0" prefWidth="90.0" text="Remove Last" />
+                  <Button fx:id="buttonClearAllMatrix" mnemonicParsing="false" onAction="#clearAllMatrix" prefHeight="50.0" prefWidth="75.0" text="Clear" />
+               </children>
             </HBox>
          </children>
       </InfoPane>

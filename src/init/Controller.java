@@ -28,8 +28,8 @@ public class Controller implements Initializable {
     @FXML
     private MenuBar menu;
     @FXML
-    private Button buttonActionInteract, buttonActionLine, buttonActionCircle, buttonActionRectangle, buttonActionMove,
-            buttonAddLayer, buttonAdjust, buttonDelete;
+    private Button buttonActionInteract, buttonActionLine, buttonActionCircle, buttonActionRectangle, buttonActionEllipse,
+            buttonActionPoint, buttonActionMove, buttonAddLayer, buttonAdjust, buttonDelete, buttonPolygon, buttonClearAllMatrix, buttonClearLastMatrix;
     @FXML
     private CheckBox checkboxSnappingStart, checkboxSnappingEnd;
     @FXML
@@ -62,13 +62,17 @@ public class Controller implements Initializable {
     private InfoPane paneRight = new InfoPane();
     @FXML
     private VectorScene scene = new VectorScene();
+    @FXML
+    private TextField tfRotation = new TextField();
+    @FXML
+    private TextArea textAreaPointMatrix = new TextArea();
 
     // On init
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scene.setInfoPane(paneRight);
         paneRight.init(scene, spinnerShapeLayer, colorPickerShapeColor,
-                colorPickerStrokeColor, sliderOpacity, tfStartX, tfStartY, tfLineWidth);
+                colorPickerStrokeColor, sliderOpacity, tfStartX, tfStartY, tfLineWidth, tfRotation, textAreaPointMatrix);
         /*
             When user switches color, listener calls scene's setColor and changes it
             Uses lambda expression instead of anonymous class -> Thanks, Intellij IDEA!
@@ -140,6 +144,20 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    public void switchActionEllipse(){
+        scene.switchMode();
+        scene.setClickMode(ClickMode.ELLIPSE);
+        labelAction.setText("Mode: Ellipse");
+    }
+
+    @FXML
+    public void switchActionPoint(){
+        scene.switchMode();
+        scene.setClickMode(ClickMode.POINT);
+        labelAction.setText("Mode: Point");
+    }
+
+    @FXML
     public void switchActionMove(){
         scene.switchMode();
         scene.setClickMode(ClickMode.MOVE);
@@ -189,6 +207,21 @@ public class Controller implements Initializable {
     @FXML
     public void changeSnappingEnd(){
         scene.changeSnappingEnd(checkboxSnappingEnd.isSelected());
+    }
+
+    @FXML
+    public void clearAllMatrix(){
+        scene.clearMatrix();
+    }
+
+    @FXML
+    public void clearLastMatrix(){
+        scene.clearLastMatrix();
+    }
+
+    @FXML
+    public void createPolygon(){
+        scene.createPolygon();
     }
 
 }

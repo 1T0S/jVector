@@ -51,13 +51,14 @@ public class MyLine extends Line implements IShape{
         String stroke = Others.getHtmlColor((Color) getStroke());
         return "<line x1=\"" + (int) getStartX() + "\" y1=\"" + (int) getStartY() + "\" x2=\"" + (int) getEndX() +
                 "\" y2=\"" + (int) getEndY() + "\" fill-opacity=\"" +  getOpacity() + "\" stroke-width=\"" +
-                (int) getStrokeWidth() + "\" stroke=\"" + stroke + "\"/>\n";
+                (int) getStrokeWidth() + "\" stroke=\"" + stroke +
+                "\" transform=\"rotate(" + getRotate() + "," + getCenterX() + "," + getCenterY() + ")\" />\n";
     }
 
     public String toJvgf(){
         String stroke = Others.getHtmlColor((Color) getStroke());
         return "LINE begin_x " + getStartX() + " begin_y " + getStartY() + " end_x " + getEndX() + " end_y " + getEndY() +
-                " fill_opacity " + getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " layer " + layer + "\n";
+                " fill_opacity " + getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " layer " + layer + " rotate " + getRotate() + "\n";
     }
 
     // Getters
