@@ -54,6 +54,13 @@ public class MyEllipse extends Ellipse implements IShape {
                 getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " fill " + fill + " layer " + layer + " rotate " + getRotate() + "\n";
     }
 
+    public MyEllipse clone(){
+        MyEllipse e = new MyEllipse(scene, layer, getCenterX(), getCenterY(), getRadiusX(), getRadiusY(), (Color) getStroke(), (Color) getFill(), (int) getStrokeWidth());
+        e.setRotate(getRotate());
+        e.setOpacity(getOpacity());
+        return e;
+    }
+
     @Override
     public double getStartX() {
         return getCenterX();

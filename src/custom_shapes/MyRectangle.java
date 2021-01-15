@@ -77,6 +77,13 @@ public class MyRectangle extends Rectangle implements IShape{
                 " fill_opacity " + getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " fill " + fill + " layer " + layer + " rotate " + getRotate() + "\n";
     }
 
+    public MyRectangle clone(){
+        MyRectangle r = new MyRectangle(scene, layer, originX, originY, getWidth(), getHeight(), (Color) getStroke(), (Color) getFill(), (int) getStrokeWidth());
+        r.setRotate(getRotate());
+        r.setOpacity(getOpacity());
+        return r;
+    }
+
     // Getters
     public int getLayer(){
         return layer;

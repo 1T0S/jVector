@@ -51,6 +51,8 @@ public interface IShape{
     void setFill(Paint p);
     double getRotate();
     void setRotate(double rotation);
+    // Returns clone of shape
+    IShape clone();
     Paint getStroke();
     Paint getFill();
 }

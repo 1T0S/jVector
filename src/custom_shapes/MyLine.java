@@ -61,6 +61,15 @@ public class MyLine extends Line implements IShape{
                 " fill_opacity " + getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " layer " + layer + " rotate " + getRotate() + "\n";
     }
 
+    public MyLine clone(){
+        MyLine l = new MyLine(scene, layer, getStartX(), getStartY(), (Color) getStroke(), (int) getStrokeWidth());
+        l.setEndX(getEndX());
+        l.setEndY(getEndY());
+        l.setOpacity(getOpacity());
+        l.setRotate(getRotate());
+        return l;
+    }
+
     // Getters
     public int getLayer(){
         return layer;

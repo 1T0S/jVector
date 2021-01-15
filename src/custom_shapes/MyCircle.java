@@ -63,6 +63,13 @@ public class MyCircle extends Circle implements IShape {
                 getOpacity() + " stroke_width " + getStrokeWidth() + " stroke_color " + stroke + " fill " + fill + " layer " + layer + " rotate " + getRotate() + "\n";
     }
 
+    public MyCircle clone(){
+        MyCircle c = new MyCircle(scene, layer, getCenterX(), getCenterY(), getRadius(), (Color) getStroke(), (Color) getFill(), (int) getStrokeWidth());
+        c.setRotate(getRotate());
+        c.setOpacity(getOpacity());
+        return c;
+    }
+
     // Getters
     public int getLayer() {
         return layer;

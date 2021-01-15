@@ -14,6 +14,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -57,6 +58,11 @@
                </font>
             </Button>
             <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#switchActionDelete" prefHeight="25.0" prefWidth="55.0" text="DEL">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonDuplicate" mnemonicParsing="false" onAction="#switchActionDuplicate" prefHeight="23.0" prefWidth="53.0" text="DUP">
                <font>
                   <Font size="10.0" />
                </font>
@@ -257,6 +263,21 @@
                   <Button fx:id="buttonPolygon" mnemonicParsing="false" onAction="#createPolygon" prefHeight="50.0" prefWidth="75.0" text="Polygon" />
                   <Button fx:id="buttonClearLastMatrix" mnemonicParsing="false" onAction="#clearLastMatrix" prefHeight="50.0" prefWidth="90.0" text="Remove Last" />
                   <Button fx:id="buttonClearAllMatrix" mnemonicParsing="false" onAction="#clearAllMatrix" prefHeight="50.0" prefWidth="75.0" text="Clear" />
+               </children>
+            </HBox>
+            <HBox maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="240.0">
+               <children>
+                  <Label alignment="CENTER" maxHeight="25.0" prefHeight="25.0" prefWidth="120.0" styleClass="big-text" text="Show points" />
+                  <CheckBox fx:id="checkboxShowPolygonPoints" alignment="CENTER" contentDisplay="CENTER" maxHeight="25.0" mnemonicParsing="false" onAction="#changePolygonPointsVisibility" prefHeight="25.0" prefWidth="25.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </CheckBox>
+                  <ColorPicker fx:id="colorPickerPolygonPoints" maxHeight="25.0" prefHeight="25.0" prefWidth="50.0">
+                     <HBox.margin>
+                        <Insets left="21.0" />
+                     </HBox.margin>
+                  </ColorPicker>
                </children>
             </HBox>
          </children>

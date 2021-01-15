@@ -29,14 +29,15 @@ public class Controller implements Initializable {
     private MenuBar menu;
     @FXML
     private Button buttonActionInteract, buttonActionLine, buttonActionCircle, buttonActionRectangle, buttonActionEllipse,
-            buttonActionPoint, buttonActionMove, buttonAddLayer, buttonAdjust, buttonDelete, buttonPolygon, buttonClearAllMatrix, buttonClearLastMatrix;
+            buttonActionPoint, buttonActionMove, buttonAddLayer, buttonAdjust, buttonDelete, buttonPolygon,
+            buttonClearAllMatrix, buttonClearLastMatrix, buttonDuplicate;
     @FXML
-    private CheckBox checkboxSnappingStart, checkboxSnappingEnd;
+    private CheckBox checkboxSnappingStart, checkboxSnappingEnd, checkboxShowPolygonPoints;
     @FXML
     private Label labelAction;
     // https://docs.oracle.com/javafx/2/ui_controls/color-picker.htm
     @FXML
-    private ColorPicker colorPickerFill, colorPickerStroke;
+    private ColorPicker colorPickerFill, colorPickerStroke, colorPickerPolygonPoints;
     @FXML
     private BorderPane b;
     @FXML
@@ -106,6 +107,11 @@ public class Controller implements Initializable {
                 scene.setLayer((Integer) spinnerCurrentLayer.getValue());
             }
         });
+
+        colorPickerPolygonPoints.setOnAction((EventHandler) t -> scene.setPolygonPointsColor(colorPickerPolygonPoints.getValue()));
+
+        textAreaPointMatrix.setEditable(false);
+        checkboxShowPolygonPoints.setSelected(true);
     }
 
     @FXML
@@ -120,6 +126,13 @@ public class Controller implements Initializable {
         scene.switchMode();
         scene.setClickMode(ClickMode.ADJUST);
         labelAction.setText("Mode: Adjust");
+    }
+
+    @FXML
+    public void switchActionDuplicate(){
+        scene.switchMode();
+        scene.setClickMode(ClickMode.DUPLICATE);
+        labelAction.setText("Mode: Duplicate");
     }
 
     @FXML
@@ -207,6 +220,11 @@ public class Controller implements Initializable {
     @FXML
     public void changeSnappingEnd(){
         scene.changeSnappingEnd(checkboxSnappingEnd.isSelected());
+    }
+
+    @FXML
+    public void changePolygonPointsVisibility(){
+        scene.setPolygonPointsVisibility(checkboxShowPolygonPoints.isSelected());
     }
 
     @FXML

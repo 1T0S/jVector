@@ -10,6 +10,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import misc.MyPoint;
+
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -38,7 +40,10 @@ public class VectorScene extends Pane {
     private static final String checkMovable = "package custom_shapes";
     // InfoPanes are tied with VectorScenes -> Shapes can be easily adjusted
     private InfoPane infoPane;
+    // Holds coordinates of points that are used to create polygon
     private ArrayList<Double> pointMatrix = new ArrayList<>();
+    // Holds polygon marks
+    private ArrayList<MyPoint> pointList = new ArrayList<>();
 
     /**
      *  <p>Initializes custom vector scene component. Adds click and drag listeners, these are used for drawing shapes.</p>
@@ -79,6 +84,8 @@ public class VectorScene extends Pane {
                 } else if(action == ClickMode.POINT && m.getButton() == MouseButton.PRIMARY){
                     pointMatrix.add(m.getX());
                     pointMatrix.add(m.getY());
+                    pointList.add(new MyPoint(m.getX(), m.getY()));
+                    renderPolygonPoints();
                     infoPane.addCoords(m.getX(), m.getY());
                 } else if(action == ClickMode.MOVE){
                     if(m.getButton() == MouseButton.PRIMARY && !isMoving){
@@ -116,6 +123,12 @@ public class VectorScene extends Pane {
                     if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
                         IShape del = (IShape) m.getPickResult().getIntersectedNode();
                         removeShape(del);
+                    }
+                }  else if(action == ClickMode.DUPLICATE){
+                    System.out.println("DUP");
+                    if(m.getPickResult().getIntersectedNode().getClass().getPackage().toString().equals(checkMovable)){
+                        IShape toDuplicate = (IShape) m.getPickResult().getIntersectedNode();
+                        newShape(toDuplicate.clone());
                     }
                 } else {
                     if(m.getButton() == MouseButton.PRIMARY && !isDrawing) {
@@ -166,7 +179,7 @@ public class VectorScene extends Pane {
                 // Check actions
                 if(action == ClickMode.INTERACT){
 
-                } else if(action == ClickMode.POINT){
+                } else if(action == ClickMode.POINT || action == ClickMode.DUPLICATE){
 
                 } else if(action == ClickMode.MOVE && isMoving){
                     currentShape.move(x, y);
@@ -285,21 +298,71 @@ public class VectorScene extends Pane {
      */
     public void clearMatrix(){
         pointMatrix.clear();
+        removePolygonPoints();
         infoPane.clearPointMatrix();
     }
 
+    /**
+     * <p>Removes last 2 coords (x, y) of polygon matrix</p>
+     */
     public void clearLastMatrix(){
         if(pointMatrix.size() >= 4){
             pointMatrix.remove(pointMatrix.size() - 1);
             pointMatrix.remove(pointMatrix.size() - 1);
+            MyPoint tmp = pointList.get(pointList.size() - 1);
+            getChildren().remove(tmp);
+            pointList.remove(tmp);
             infoPane.removePointMatrixLine();
         }
     }
 
+    /**
+     * <p>Creates polygon from polygonMatrix, clears polygonMatrix</p>
+     */
     public void createPolygon(){
-        System.out.println("!H");
         newShape(new MyPolygon(VectorScene.this, pointMatrix, strokeColor, fillColor, strokeWidth, layer));
         clearMatrix();
+        removePolygonPoints();
+    }
+
+    /**
+     * <p>Renders all polygon points on scene, user won't be able to interact with these points or export them</p>
+     */
+    private void renderPolygonPoints(){
+        for(MyPoint point : pointList){
+            if(!getChildren().contains(point)){
+                getChildren().add(point);
+            }
+        }
+    }
+
+    private void removePolygonPoints(){
+        for(MyPoint point : pointList){
+            getChildren().remove(point);
+        }
+        pointList.clear();
+    }
+
+    public void setPolygonPointsVisibility(boolean visibility){
+        for(MyPoint point : pointList){
+            point.setVisible(visibility);
+        }
+        MyPoint.setDefaultVisibility(visibility);
+    }
+
+    public void setPolygonPointsColor(Color c){
+        for(MyPoint point: pointList){
+            point.setFill(c);
+        }
+        MyPoint.setDefaultFill(c);
+    }
+
+    public void clearAll(){
+        getChildren().removeAll();
+        for(ArrayList<IShape> arr : content){
+            arr.clear();
+        }
+        switchMode();
     }
 
     /*
@@ -415,6 +478,26 @@ public class VectorScene extends Pane {
         currentEllipse.setLayer(Integer.parseInt(params[18]));
         currentEllipse.setRotate(Double.parseDouble(params[20]));
         currentShape = null;
+    }
+
+    public void readPolygon(String[] params){
+        MyPolygon currentPolygon = new MyPolygon();
+        newShape(currentPolygon);
+        // Get points from my format - Ouch
+        ArrayList<Double> points = new ArrayList<>();
+        String pointsString = params[2];
+        while(pointsString.length() != 0){
+            System.out.println(pointsString.substring(0, pointsString.indexOf(',')));
+            points.add(Double.parseDouble(pointsString.substring(0, pointsString.indexOf(','))));
+            pointsString = pointsString.substring(pointsString.indexOf(',') + 1);
+        }
+        currentPolygon.getPoints().addAll(points);
+        currentPolygon.setOpacity(Double.parseDouble(params[4]));
+        currentPolygon.setStrokeWidth(Double.parseDouble(params[6]));
+        currentPolygon.setStroke(Color.valueOf(params[8]));
+        currentPolygon.setFill(Color.valueOf(params[10]));
+        currentPolygon.setLayer(Integer.parseInt(params[12]));
+        currentPolygon.setRotate(Double.parseDouble(params[14]));
     }
 }
 

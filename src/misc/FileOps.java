@@ -82,6 +82,7 @@ public class FileOps {
             int layer = Integer.parseInt(layerInfo.split(" ")[1]);
             // Start reading shapes
             String line = "";
+            scene.clearAll();
             while((line = br.readLine()) != null){
                 String[] params = line.split(" ");
                 switch(params[0]){
@@ -96,6 +97,9 @@ public class FileOps {
                         break;
                     case "ELLIPSE":
                         scene.readEllipse(params);
+                        break;
+                    case "POLYGON":
+                        scene.readPolygon(params);
                         break;
                 }
             }
